@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: portfolio
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${PORTFOLIO_DB_URL}&password=${PORTFOLIO_DB_PASSWORD}&user=${PORTFOLIO_DB_USERNAME}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  liquibase:
+    change-log: classpath:db/changelog/changelog-master.xml
+
