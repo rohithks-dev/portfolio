@@ -6,7 +6,7 @@ import lombok.Data;
 public class PortfolioResponse {
 
     private String message;
-    private String userID;
+    private Integer userID;
     private String userName;
     private Integer statusCode;
 

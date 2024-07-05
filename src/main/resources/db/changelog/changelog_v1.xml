@@ -2,104 +2,96 @@
 <databaseChangeLog
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd
-            http://www.liquibase.org/xml/ns/pro
-            http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.5.xsd">
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+        <changeSet author="rohithks" id="1">
+            <createTable tableName="user_tab">
+                <column autoIncrement="true" name="user_id" type="INTEGER">
+                    <constraints nullable="false" primaryKey="true" primaryKeyName="user_id_pk"/>
+                </column>
+                <column name="user_name" type="VARCHAR(255)">
+                    <constraints nullable="false" unique="true" uniqueConstraintName="user_name_uk"/>
+                </column>
+                <column name="secret" type="VARCHAR(255)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="first_name" type="VARCHAR(255)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="last_name" type="VARCHAR(255)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="middle_name" type="VARCHAR(255)"/>
+                <column name="phone" type="INTEGER"/>
+                <column name="email_id" type="VARCHAR(255)"/>
+                <column name="linkedin_url" type="VARCHAR(255)"/>
+                <column name="github_url" type="VARCHAR(255)"/>
+                <column name="created_on" type="datetime"/>
+            </createTable>
+        </changeSet>
 
-    <changeSet author="rohithks" id="1">
-        <createTable tableName="user_tab">
-            <column autoIncrement="true" name="user_id" type="INTEGER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="user_id_pk"/>
-            </column>
-            <column name="user_name" type="VARCHAR(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="user_name_uk"/>
-            </column>
-            <column name="secret" type="VARCHAR(255)">
+        <changeSet author="rohithks" id="2">
+            <createTable tableName="experience_tab">
+                <column autoIncrement="true" name="experience_id" type="INTEGER">
+                    <constraints nullable="false" primaryKey="true" primaryKeyName="experience_tab_pk"/>
+                </column>
+                <column name="user_id" type="INTEGER">
+                    <constraints foreignKeyName="user_tab_fk" referencedTableName="user_tab" referencedColumnNames="user_id"/>
+                </column>
+                <column name="title" type="VARCHAR(255)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="company" type="VARCHAR(255)">
                 <constraints nullable="false"/>
-            </column>
-            <column name="first_name" type="VARCHAR(255)">
+                </column>
+                <column name="from_date" type="datetime">
                 <constraints nullable="false"/>
-            </column>
-            <column name="last_name" type="VARCHAR(255)">
+                </column>
+                <column name="to_date" type="datetime">
                 <constraints nullable="false"/>
-            </column>
-            <column name="middle_name" type="VARCHAR(255)"/>
-            <column name="phone" type="INTEGER"/>
-            <column name="email_id" type="VARCHAR(255)"/>
-            <column name="linkedIn_URL" type="VARCHAR(255)"/>
-            <column name="github_URL" type="VARCHAR(255)"/>
-            <column name="created_on" type="TIMESTAMP"/>
-        </createTable>
-    </changeSet>
+                </column>
+                <column name="about" type="VARCHAR(255)"/>
+                <column name="skills" type="VARCHAR(255)"/>
+            </createTable>
+        </changeSet>
 
-    <changeSet author="rohithks" id="2">
-        <createTable tableName="experience_tab">
-            <column autoIncrement="true" name="experience_id" type="INTEGER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="experience_tab_pk"/>
-            </column>
-            <column name="user_id" type="INTEGER">
-                <constraints foreignKeyName="user_tab_fk" referencedTableName="user_tab" referencedColumnNames="user_id"/>
-            </column>
-            <column name="title" type="VARCHAR(255)">
+        <changeSet author="rohithks" id="3">
+            <createTable tableName="project_tab">
+                <column autoIncrement="true" name="project_id" type="INTEGER">
+                    <constraints nullable="false" primaryKey="true" primaryKeyName="project_tab_pk"/>
+                </column>
+                <column name="user_id" type="INTEGER">
+                    <constraints foreignKeyName="user_tab_fk" referencedTableName="user_tab" referencedColumnNames="user_id"/>
+                </column>
+                <column name="title" type="VARCHAR(255)">
                 <constraints nullable="false"/>
-            </column>
-            <column name="company" type="VARCHAR(255)">
-            <constraints nullable="false"/>
-            </column>
-            <column name="fromDate" type="TIMESTAMP">
-            <constraints nullable="false"/>
-            </column>
-            <column name="toDate" type="TIMESTAMP">
-            <constraints nullable="false"/>
-            </column>
-            <column name="about" type="VARCHAR(255)"/>
-            <column name="skills" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
+                </column>
+                <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+                </column>
+                <column name="skills" type="VARCHAR(255)"/>
+                <column name="live_url" type="VARCHAR(255)"/>
+                <column name="github_url" type="VARCHAR(255)"/>
+            </createTable>
+        </changeSet>
 
-    <changeSet author="rohithks" id="3">
-        <createTable tableName="project_tab">
-            <column autoIncrement="true" name="project_id" type="INTEGER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="project_tab_pk"/>
-            </column>
-            <column name="user_id" type="INTEGER">
-                <constraints foreignKeyName="user_tab_fk" referencedTableName="user_tab" referencedColumnNames="user_id"/>
-            </column>
-            <column name="title" type="VARCHAR(255)">
-            <constraints nullable="false"/>
-            </column>
-            <column name="description" type="VARCHAR(255)">
-            <constraints nullable="false"/>
-            </column>
-            <column name="skills" type="VARCHAR(255)"/>
-            <column name="live_URL" type="VARCHAR(255)"/>
-            <column name="github_URL" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
-
-    <changeSet author="rohithks" id="4">
-        <createTable tableName="certificate_tab">
-            <column autoIncrement="true" name="certificate_id" type="INTEGER">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="certificate_tab_pk"/>
-            </column>
-            <column name="user_id" type="INTEGER">
-                <constraints foreignKeyName="user_tab_fk" referencedTableName="user_tab" referencedColumnNames="user_id"/>
-            </column>
-            <column name="name" type="VARCHAR(255)">
-            <constraints nullable="false"/>
-            </column>
-            <column name="description" type="VARCHAR(255)">
-            <constraints nullable="false"/>
-            </column>
-            <column name="company" type="VARCHAR(255)">
-            <constraints nullable="false"/>
-            </column>
-            <column name="year" type="TIMESTAMP"/>
-            <column name="certificate_URL" type="VARCHAR(255)"/>
-            <column name="skills" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
-
+        <changeSet author="rohithks" id="4">
+            <createTable tableName="certificate_tab">
+                <column autoIncrement="true" name="certificate_id" type="INTEGER">
+                    <constraints nullable="false" primaryKey="true" primaryKeyName="certificate_tab_pk"/>
+                </column>
+                <column name="user_id" type="INTEGER">
+                    <constraints foreignKeyName="user_tab_fk" referencedTableName="user_tab" referencedColumnNames="user_id"/>
+                </column>
+                <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+                </column>
+                <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+                </column>
+                <column name="year" type="datetime"/>
+                <column name="certificate_url" type="VARCHAR(255)"/>
+                <column name="skills" type="VARCHAR(255)"/>
+            </createTable>
+        </changeSet>
 </databaseChangeLog>

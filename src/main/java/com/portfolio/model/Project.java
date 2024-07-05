@@ -3,7 +3,7 @@ package com.portfolio.model;
 import lombok.Data;
 
 @Data
-public class Projects {
+public class Project {
 
     private String title;
     private String description;

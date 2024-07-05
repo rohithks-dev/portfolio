@@ -3,26 +3,22 @@ package com.portfolio.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
-@Table(name = "experience_tab")
-public class ExperienceTabEntity {
+@Table(name = "project_tab")
+public class ProjectTabEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer experience_id;
+    private Integer project_id;
+
     private String title;
-    private String company;
-    private LocalDate fromDate;
-    private LocalDate toDate;
-    private String about;
+    private String description;
     private String skills;
+    private String live_url;
+    private String github_url;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

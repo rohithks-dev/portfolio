@@ -6,4 +6,7 @@ import com.portfolio.model.PortfolioResponse;
 public interface PortfolioService {
 
     PortfolioResponse createPortfolio(PortfolioBody portfolio);
+
+    PortfolioResponse deletePortfolio(String userName);
+
 }
