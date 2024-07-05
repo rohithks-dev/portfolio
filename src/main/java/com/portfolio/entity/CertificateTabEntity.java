@@ -10,16 +10,17 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity
 @Table(name = "experience_tab")
-public class ExperienceTabEntity {
+public class CertificateTabEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer experience_id;
-    private String title;
-    private String company;
-    private LocalDate fromDate;
-    private LocalDate toDate;
-    private String about;
+    private Integer certificate_id;
+
+    private String name;
+    private String description;
+    private LocalDate company;
+    private LocalDate year;
+    private String certificate_URL;
     private String skills;
 
     @ManyToOne

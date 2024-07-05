@@ -1,12 +1,16 @@
 package com.portfolio.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@Builder
+@AllArgsConstructor
 @Entity
 @Table(name = "user_tab")
 public class UserTabEntity {
@@ -27,6 +31,12 @@ public class UserTabEntity {
     private LocalDateTime created_on;
 
     @OneToMany(mappedBy = "userTab")
-    private List<ExperienceTabEntity> experienceTab;
+    private List<ExperienceTabEntity> experiences;
+
+    @OneToMany(mappedBy = "userTab")
+    private List<ProjectTabEntity> projects;
+
+    @OneToMany(mappedBy = "userTab")
+    private List<CertificateTabEntity> certifications;
 
 }
