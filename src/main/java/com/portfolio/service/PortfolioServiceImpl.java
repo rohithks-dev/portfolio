@@ -7,7 +7,9 @@ import com.portfolio.entity.UserTabEntity;
 import com.portfolio.model.*;
 import com.portfolio.repository.CreatePortfolioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     private CreatePortfolioRepository portfolioRepository;
 
     @Override
+    @Transactional
     public PortfolioResponse createPortfolio(PortfolioBody portfolio) {
 
         List<ExperienceTabEntity> experienceTabEntityList = new ArrayList<>();
@@ -93,16 +96,20 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public PortfolioResponse deletePortfolio(String userName) {
-        UserTabEntity userTab = portfolioRepository.findByUserName(userName);
+    public PortfolioResponse deletePortfolio(String userName, DeletePortfolio deletePortfolio) {
+        UserTabEntity userTab = portfolioRepository.findByUserName(userName, deletePortfolio.getUserId(), deletePortfolio.getSecret());
         PortfolioResponse portfolioResponse = new PortfolioResponse();
         if (userTab != null) {
             portfolioRepository.deleteById(userTab.getUser_id());
-            portfolioResponse.setMessage("User deleted successfully");
             portfolioResponse.setUserID(userTab.getUser_id());
+            portfolioResponse.setUserName(userTab.getUser_name());
+            portfolioResponse.setMessage("User Portfolio Deleted");
+            portfolioResponse.setStatusCode(HttpStatus.OK);
             return portfolioResponse;
         }
-        portfolioResponse.setMessage("User not found");
+        portfolioResponse.setUserName(userName);
+        portfolioResponse.setMessage("User Portfolio Deleted");
+        portfolioResponse.setStatusCode(HttpStatus.NOT_FOUND);
         return portfolioResponse;
     }
 }

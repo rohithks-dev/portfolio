@@ -1,6 +1,7 @@
 package com.portfolio.model;
 
 import lombok.Data;
+import org.springframework.http.HttpStatus;
 
 @Data
 public class PortfolioResponse {
@@ -8,6 +9,6 @@ public class PortfolioResponse {
     private String message;
     private Integer userID;
     private String userName;
-    private Integer statusCode;
+    private HttpStatus statusCode;
 
 }
