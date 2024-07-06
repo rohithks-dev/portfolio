@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface CreatePortfolioRepository extends JpaRepository<UserTabEntity, Integer> {
 
-    @Query("SELECT * from user_tab u where u.user_name = :userName")
+    @Query("SELECT u from UserTabEntity u where u.user_name = :userName")
     UserTabEntity findByUserName(String userName);
 
 }
