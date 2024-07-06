@@ -108,7 +108,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             return portfolioResponse;
         }
         portfolioResponse.setUserName(userName);
-        portfolioResponse.setMessage("User Portfolio Deleted");
+        portfolioResponse.setMessage("User Portfolio Not Found");
         portfolioResponse.setStatusCode(HttpStatus.NOT_FOUND);
         return portfolioResponse;
     }
