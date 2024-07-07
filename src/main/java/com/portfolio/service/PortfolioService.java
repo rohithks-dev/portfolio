@@ -8,6 +8,8 @@ public interface PortfolioService {
 
     PortfolioResponse createPortfolio(PortfolioBody portfolio);
 
+    PortfolioBody getPortfolio(String userName);
+
     PortfolioResponse deletePortfolio(String userName, DeletePortfolio deletePortfolio);
 
 }

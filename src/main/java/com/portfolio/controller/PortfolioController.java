@@ -24,6 +24,11 @@ public class PortfolioController {
         return portfolioResponse;
     }
 
+    @GetMapping("/{userName}")
+    public PortfolioBody getPortfolio(@PathVariable String userName) {
+        return portfolioService.getPortfolio(userName);
+    }
+
     @DeleteMapping("/delete-portfolio")
     public PortfolioResponse deletePortfolio(@RequestParam(name = "userName") String userName, @RequestBody DeletePortfolio deletePortfolio) {
         return portfolioService.deletePortfolio(userName, deletePortfolio);
