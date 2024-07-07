@@ -23,28 +23,60 @@ public class PortfolioServiceImpl implements PortfolioService {
     @Override
     @Transactional
     public PortfolioResponse createPortfolio(PortfolioBody portfolio) {
-
-        List<ExperienceTabEntity> experienceTabEntityList = new ArrayList<>();
-        List<ProjectTabEntity> projectTabEntityList = new ArrayList<>();
-        List<CertificateTabEntity> certificateTabEntityList = new ArrayList<>();
-
-        UserTabEntity userTab = UserTabEntity.builder()
-                .user_name(portfolio.getUserName())
-                .first_name(portfolio.getFirstName())
-                .last_name(portfolio.getLastName())
-                .middle_name(portfolio.getMiddleName())
-                .phone(portfolio.getPhoneNumber())
-                .email_id(portfolio.getEmail())
-                .linkedIn_URL(portfolio.getLinkedInURL())
-                .github_URL(portfolio.getGithubURL())
-                .secret(portfolio.getSecret())
-                .created_on(portfolio.getCreatedOn())
-                .experiences(experienceTabEntityList)
-                .projects(projectTabEntityList)
-                .certifications(certificateTabEntityList)
-                .created_on(portfolio.getCreatedOn())
+        UserTabEntity userTab = buildUserTabEntity(portfolio);
+        List<ExperienceTabEntity> experienceTabEntityList = buildExperienceTabEntities(portfolio, userTab);
+        List<ProjectTabEntity> projectTabEntityList = buildProjectTabEntities(portfolio, userTab);
+        List<CertificateTabEntity> certificateTabEntityList = buildCertificateTabEntities(portfolio, userTab);
+        userTab.setExperiences(experienceTabEntityList);
+        userTab.setCertifications(certificateTabEntityList);
+        userTab.setProjects(projectTabEntityList);
+        UserTabEntity userTabEntity = portfolioRepository.save(userTab);
+        return PortfolioResponse.builder()
+                .userID(userTabEntity.getUser_id())
+                .userName(userTabEntity.getUser_name())
+                .message("User Portfolio Created")
+                .statusCode(HttpStatus.CREATED)
                 .build();
+    }
 
+    private List<CertificateTabEntity> buildCertificateTabEntities(PortfolioBody portfolio, UserTabEntity userTab) {
+        List<CertificateTabEntity> certificateTabEntityList = new ArrayList<>();
+        if (portfolio.getCertificationList() != null && !portfolio.getCertificationList().isEmpty()) {
+            for (Certification certification : portfolio.getCertificationList()) {
+                CertificateTabEntity certificateTabEntity = CertificateTabEntity.builder()
+                        .name(certification.getName())
+                        .certificate_url(certification.getCertificateURL())
+                        .year(certification.getYear())
+                        .description(certification.getDescription())
+                        .skills(certification.getSkills())
+                        .userTab(userTab)
+                        .build();
+                certificateTabEntityList.add(certificateTabEntity);
+            }
+        }
+        return certificateTabEntityList;
+    }
+
+    private List<ProjectTabEntity> buildProjectTabEntities(PortfolioBody portfolio, UserTabEntity userTab) {
+        List<ProjectTabEntity> projectTabEntityList = new ArrayList<>();
+        if (portfolio.getProjectList() != null && !portfolio.getProjectList().isEmpty()) {
+            for (Project project : portfolio.getProjectList()) {
+                ProjectTabEntity projectTabEntity = ProjectTabEntity.builder()
+                        .title(project.getTitle())
+                        .description(project.getDescription())
+                        .live_url(project.getLiveURL())
+                        .github_url(project.getGithubURL())
+                        .skills(project.getSkills())
+                        .userTab(userTab)
+                        .build();
+                projectTabEntityList.add(projectTabEntity);
+            }
+        }
+        return projectTabEntityList;
+    }
+
+    private List<ExperienceTabEntity> buildExperienceTabEntities(PortfolioBody portfolio, UserTabEntity userTab) {
+        List<ExperienceTabEntity> experienceTabEntityList = new ArrayList<>();
         if (portfolio.getExperienceList() != null && !portfolio.getExperienceList().isEmpty()) {
             for (Experience experience : portfolio.getExperienceList()) {
                 ExperienceTabEntity experienceTabEntity = ExperienceTabEntity.builder()
@@ -59,43 +91,26 @@ public class PortfolioServiceImpl implements PortfolioService {
                 experienceTabEntityList.add(experienceTabEntity);
             }
         }
+        return experienceTabEntityList;
+    }
 
-        if (!portfolio.getProjectList().isEmpty()) {
-            for (Project project : portfolio.getProjectList()) {
-                ProjectTabEntity projectTabEntity = ProjectTabEntity.builder()
-                        .title(project.getTitle())
-                        .description(project.getDescription())
-                        .live_url(project.getLiveURL())
-                        .github_url(project.getGithubURL())
-                        .skills(project.getSkills())
-                        .userTab(userTab)
-                        .build();
-                projectTabEntityList.add(projectTabEntity);
-            }
-        }
-
-        if(!portfolio.getCertificationList().isEmpty()) {
-            for (Certification certification : portfolio.getCertificationList()) {
-                CertificateTabEntity certificateTabEntity = CertificateTabEntity.builder()
-                        .name(certification.getName())
-                        .certificate_url(certification.getCertificateURL())
-                        .year(certification.getYear())
-                        .description(certification.getDescription())
-                        .skills(certification.getSkills())
-                        .userTab(userTab)
-                        .build();
-                certificateTabEntityList.add(certificateTabEntity);
-            }
-        }
-
-        userTab.setExperiences(experienceTabEntityList);
-        userTab.setCertifications(certificateTabEntityList);
-        userTab.setProjects(projectTabEntityList);
-        portfolioRepository.save(userTab);
-        return null;
+    private UserTabEntity buildUserTabEntity(PortfolioBody portfolio) {
+        return UserTabEntity.builder()
+                .user_name(portfolio.getUserName())
+                .first_name(portfolio.getFirstName())
+                .last_name(portfolio.getLastName())
+                .middle_name(portfolio.getMiddleName())
+                .phone(portfolio.getPhoneNumber())
+                .email_id(portfolio.getEmail())
+                .linkedIn_URL(portfolio.getLinkedInURL())
+                .github_URL(portfolio.getGithubURL())
+                .secret(portfolio.getSecret())
+                .created_on(portfolio.getCreatedOn())
+                .build();
     }
 
     @Override
+    @Transactional
     public PortfolioBody getPortfolio(String userName) {
         UserTabEntity userTab = portfolioRepository.findByUserName(userName);
         if(userTab != null) {
@@ -176,6 +191,7 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
+    @Transactional
     public PortfolioResponse deletePortfolio(String userName, DeletePortfolio deletePortfolio) {
         UserTabEntity userTab = portfolioRepository.findByUserNameWithUserIdSecret(userName, deletePortfolio.getUserId(), deletePortfolio.getSecret());
         PortfolioResponse portfolioResponse = new PortfolioResponse();

@@ -15,13 +15,7 @@ public class PortfolioController {
     @PostMapping("/create-portfolio")
     public PortfolioResponse createPortfolio(
             @RequestBody PortfolioBody portfolio) {
-        portfolioService.createPortfolio(portfolio);
-        PortfolioResponse portfolioResponse = new PortfolioResponse();
-        portfolioResponse.setMessage("Successfully Created");
-        portfolioResponse.setUserName(portfolio.getUserName());
-        portfolioResponse.setUserID(1);
-        portfolioResponse.setStatusCode(HttpStatus.CREATED);
-        return portfolioResponse;
+        return portfolioService.createPortfolio(portfolio);
     }
 
     @GetMapping("/{userName}")
