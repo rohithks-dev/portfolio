@@ -4,6 +4,7 @@
     import lombok.AllArgsConstructor;
     import lombok.Builder;
     import lombok.Data;
+    import org.springframework.http.HttpStatus;
 
     import java.time.LocalDateTime;
     import java.util.List;
@@ -30,4 +31,6 @@
         private List<Project> projectList;
         private List<Certification> certificationList;
         private LocalDateTime createdOn;
+        private String message;
+        private HttpStatus statusCode;
     }

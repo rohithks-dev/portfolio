@@ -98,7 +98,14 @@ public class PortfolioServiceImpl implements PortfolioService {
     @Override
     public PortfolioBody getPortfolio(String userName) {
         UserTabEntity userTab = portfolioRepository.findByUserName(userName);
-        return buildPortfolioBody(userTab);
+        if(userTab != null) {
+            return buildPortfolioBody(userTab);
+        }
+        return PortfolioBody.builder()
+                .message("User not found")
+                .statusCode(HttpStatus.NOT_FOUND)
+                .build();
+
     }
 
     private PortfolioBody buildPortfolioBody(UserTabEntity userTab) {
