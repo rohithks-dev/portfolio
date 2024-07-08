@@ -10,6 +10,9 @@ public interface PortfolioService {
 
     PortfolioBody getPortfolio(String userName);
 
+    PortfolioBody updatePortfolio(PortfolioBody portfolioBody);
+
     PortfolioResponse deletePortfolio(String userName, DeletePortfolio deletePortfolio);
 
+    PortfolioResponse verifyPortfolio(Integer userId, String userName, String secret);
 }

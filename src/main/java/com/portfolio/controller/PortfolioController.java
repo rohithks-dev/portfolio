@@ -3,7 +3,6 @@ package com.portfolio.controller;
 import com.portfolio.model.*;
 import com.portfolio.service.PortfolioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,6 +20,19 @@ public class PortfolioController {
     @GetMapping("/{userName}")
     public PortfolioBody getPortfolio(@PathVariable String userName) {
         return portfolioService.getPortfolio(userName);
+    }
+
+    @GetMapping("/verifyPortfolio")
+    public PortfolioResponse verifyPortfolio(
+            @RequestParam("userName") String userName,
+            @RequestParam("userId") Integer userId,
+            @RequestParam("secret") String secret) {
+        return portfolioService.verifyPortfolio(userId, userName, secret);
+    }
+
+    @PutMapping("/update-portfolio/{userName}")
+    public PortfolioResponse updatePortfolio(@PathVariable String userName, @RequestBody PortfolioBody portfolio) {
+        return portfolioService.createPortfolio(portfolio);
     }
 
     @DeleteMapping("/delete-portfolio")

@@ -191,6 +191,34 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
+    public PortfolioResponse verifyPortfolio(Integer userId, String userName, String secret) {
+        UserTabEntity userTab = portfolioRepository.findByUserNameWithUserIdSecret(userName, userId, secret);
+        if (userTab != null) {
+            return PortfolioResponse.builder()
+                    .userName(userName)
+                    .userID(userId)
+                    .message("User Portfolio Verified")
+                    .statusCode(HttpStatus.OK)
+                    .build();
+        }
+        return userPortfolioNotFound(userName);
+    }
+
+    public PortfolioResponse userPortfolioNotFound(String userName) {
+        return PortfolioResponse.builder()
+                .userName(userName)
+                .message("User Portfolio Not Found")
+                .statusCode(HttpStatus.NOT_FOUND)
+                .build();
+    }
+
+    @Override
+    public PortfolioBody updatePortfolio(PortfolioBody portfolioBody) {
+        //UserTabEntity userTab = verifyPortfolio(portfolioBody.getUserId(), portfolioBody.getUserName(), portfolioBody.getSecret());
+        return null;
+    }
+
+    @Override
     @Transactional
     public PortfolioResponse deletePortfolio(String userName, DeletePortfolio deletePortfolio) {
         UserTabEntity userTab = portfolioRepository.findByUserNameWithUserIdSecret(userName, deletePortfolio.getUserId(), deletePortfolio.getSecret());
@@ -203,9 +231,6 @@ public class PortfolioServiceImpl implements PortfolioService {
             portfolioResponse.setStatusCode(HttpStatus.OK);
             return portfolioResponse;
         }
-        portfolioResponse.setUserName(userName);
-        portfolioResponse.setMessage("User Portfolio Not Found");
-        portfolioResponse.setStatusCode(HttpStatus.NOT_FOUND);
-        return portfolioResponse;
+        return userPortfolioNotFound(userName);
     }
 }
