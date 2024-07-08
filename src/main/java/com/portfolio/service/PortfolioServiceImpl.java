@@ -213,9 +213,30 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public PortfolioBody updatePortfolio(PortfolioBody portfolioBody) {
-        //UserTabEntity userTab = verifyPortfolio(portfolioBody.getUserId(), portfolioBody.getUserName(), portfolioBody.getSecret());
-        return null;
+    public PortfolioResponse updatePortfolio(String userName, PortfolioBody portfolioBody) {
+        UserTabEntity userTab = portfolioRepository.findByUserName(userName);
+        if (userTab != null) {
+            updateUserTabEntity(userTab, portfolioBody);
+            buildExperienceTabEntities(portfolioBody, userTab);
+            buildCertificateTabEntities(portfolioBody, userTab);
+            buildProjectTabEntities(portfolioBody, userTab);
+            return PortfolioResponse.builder()
+                    .userName(userName)
+                    .message("User Portfolio Updated")
+                    .statusCode(HttpStatus.OK)
+                    .build();
+        }
+        return userPortfolioNotFound(userName);
+    }
+
+    private void updateUserTabEntity(UserTabEntity userTab, PortfolioBody portfolioBody) {
+        userTab.setFirst_name(portfolioBody.getFirstName());
+        userTab.setLast_name(portfolioBody.getLastName());
+        userTab.setMiddle_name(portfolioBody.getMiddleName());
+        userTab.setPhone(portfolioBody.getPhoneNumber());
+        userTab.setEmail_id(portfolioBody.getEmail());
+        userTab.setLinkedIn_URL(portfolioBody.getLinkedInURL());
+        userTab.setGithub_URL(portfolioBody.getGithubURL());
     }
 
     @Override

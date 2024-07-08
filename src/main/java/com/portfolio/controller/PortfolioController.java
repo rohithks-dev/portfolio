@@ -22,7 +22,7 @@ public class PortfolioController {
         return portfolioService.getPortfolio(userName);
     }
 
-    @GetMapping("/verifyPortfolio")
+    @GetMapping("/verify-portfolio")
     public PortfolioResponse verifyPortfolio(
             @RequestParam("userName") String userName,
             @RequestParam("userId") Integer userId,
@@ -32,7 +32,7 @@ public class PortfolioController {
 
     @PutMapping("/update-portfolio/{userName}")
     public PortfolioResponse updatePortfolio(@PathVariable String userName, @RequestBody PortfolioBody portfolio) {
-        return portfolioService.createPortfolio(portfolio);
+        return portfolioService.updatePortfolio(userName, portfolio);
     }
 
     @DeleteMapping("/delete-portfolio")

@@ -10,7 +10,7 @@ public interface PortfolioService {
 
     PortfolioBody getPortfolio(String userName);
 
-    PortfolioBody updatePortfolio(PortfolioBody portfolioBody);
+    PortfolioResponse updatePortfolio(String userName, PortfolioBody portfolioBody);
 
     PortfolioResponse deletePortfolio(String userName, DeletePortfolio deletePortfolio);
 
