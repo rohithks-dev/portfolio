@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PortfolioServiceImpl implements PortfolioService {
@@ -73,6 +74,24 @@ public class PortfolioServiceImpl implements PortfolioService {
             }
         }
         return projectTabEntityList;
+    }
+
+    private List<ExperienceTabEntity> buildExperienceTabEntities1(PortfolioBody portfolio, UserTabEntity userTab) {
+        List<ExperienceTabEntity> experienceTabEntityList = new ArrayList<>();
+        if (portfolio.getExperienceList() != null && !portfolio.getExperienceList().isEmpty()) {
+            for (Experience experience : portfolio.getExperienceList()) {
+                ExperienceTabEntity experienceTabEntity = new ExperienceTabEntity();
+                experienceTabEntity.setTitle(experience.getTitle());
+                experienceTabEntity.setCompany(experience.getCompany());
+                experienceTabEntity.setFromDate(experience.getFromDate());
+                experienceTabEntity.setToDate(experience.getToDate());
+                experienceTabEntity.setAbout(experience.getAbout());
+                experienceTabEntity.setSkills(experience.getSkills());
+                experienceTabEntity.setUserTab(userTab);
+                experienceTabEntityList.add(experienceTabEntity);
+            }
+        }
+        return experienceTabEntityList;
     }
 
     private List<ExperienceTabEntity> buildExperienceTabEntities(PortfolioBody portfolio, UserTabEntity userTab) {
@@ -217,9 +236,10 @@ public class PortfolioServiceImpl implements PortfolioService {
         UserTabEntity userTab = portfolioRepository.findByUserName(userName);
         if (userTab != null) {
             updateUserTabEntity(userTab, portfolioBody);
-            buildExperienceTabEntities(portfolioBody, userTab);
+            buildExperienceTabEntities1(portfolioBody, userTab);
             buildCertificateTabEntities(portfolioBody, userTab);
             buildProjectTabEntities(portfolioBody, userTab);
+            portfolioRepository.save(userTab);
             return PortfolioResponse.builder()
                     .userName(userName)
                     .message("User Portfolio Updated")
@@ -230,13 +250,21 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     private void updateUserTabEntity(UserTabEntity userTab, PortfolioBody portfolioBody) {
-        userTab.setFirst_name(portfolioBody.getFirstName());
-        userTab.setLast_name(portfolioBody.getLastName());
-        userTab.setMiddle_name(portfolioBody.getMiddleName());
-        userTab.setPhone(portfolioBody.getPhoneNumber());
-        userTab.setEmail_id(portfolioBody.getEmail());
-        userTab.setLinkedIn_URL(portfolioBody.getLinkedInURL());
-        userTab.setGithub_URL(portfolioBody.getGithubURL());
+        if(portfolioBody.getFirstName() != null) {
+            userTab.setFirst_name(portfolioBody.getFirstName());
+        }
+        Optional.ofNullable(portfolioBody.getFirstName())
+                        .ifPresent(userTab::setFirst_name);
+        Optional.ofNullable(portfolioBody.getLastName())
+                .ifPresent(userTab::setLast_name);
+        Optional.ofNullable(portfolioBody.getPhoneNumber())
+                .ifPresent(userTab::setPhone);
+        Optional.ofNullable(portfolioBody.getEmail())
+                .ifPresent(userTab::setEmail_id);
+        Optional.ofNullable(portfolioBody.getLinkedInURL())
+                .ifPresent(userTab::setLinkedIn_URL);
+        Optional.ofNullable(portfolioBody.getGithubURL())
+                .ifPresent(userTab::setGithub_URL);
     }
 
     @Override

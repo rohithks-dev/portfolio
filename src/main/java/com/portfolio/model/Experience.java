@@ -17,5 +17,6 @@ public class Experience {
     private LocalDate toDate;
     private String about;
     private String skills;
+    private String operation;
 
 }

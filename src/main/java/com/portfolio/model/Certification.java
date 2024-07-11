@@ -16,5 +16,6 @@ public class Certification {
     private String description;
     private String certificateURL;
     private String skills;
+    private String operation;
 
 }

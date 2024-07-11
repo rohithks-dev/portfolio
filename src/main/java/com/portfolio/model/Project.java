@@ -14,5 +14,6 @@ public class Project {
     private String liveURL;
     private String githubURL;
     private String skills;
+    private String operation;
 
 }

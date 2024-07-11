@@ -28,8 +28,14 @@
         private String secret;
         //private resume
         private List<Experience> experienceList;
+        private List<Experience> newExperienceList;
+
         private List<Project> projectList;
+        private List<Project> newProjectList;
+
         private List<Certification> certificationList;
+        private List<Certification> newCertificationList;
+
         private LocalDateTime createdOn;
         private String message;
         private HttpStatus statusCode;
