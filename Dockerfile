@@ -6,5 +6,5 @@ RUN ./gradlew bootJar --no-daemon
 
 FROM openjdk:17-jdk-slim
 EXPOSE 8080
-COPY --from=build /build/libs/portfolio-0.0.1-SNAPSHOT-plain.jar portfolio.jar
+COPY --from=build /build/libs/portfolio-0.0.1-SNAPSHOT.jar portfolio.jar
 ENTRYPOINT ["java", "-jar", "/portfolio.jar"]
